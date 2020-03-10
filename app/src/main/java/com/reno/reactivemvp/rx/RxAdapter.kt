@@ -64,3 +64,9 @@ class RxViewHolder(
         })
     }
 }
+
+enum class SeekBarStatus {
+    ON_START,
+    ON_PROGRESS,
+    ON_STOP
+}

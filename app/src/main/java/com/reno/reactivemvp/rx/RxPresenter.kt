@@ -8,14 +8,14 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class RxPresenter(
     private val view: RxContract.View,
-    private val model: RxContract.Model,
-    private val adapterModel: RxContract.Adapter.Model
+    model: RxContract.Model,
+    adapterModel: RxContract.Adapter.Model
 ) : RxContract.Presenter {
     private val disposable: Disposable
 
     init {
-
         adapterModel.addItems(model.items)
+
         disposable = adapterModel.subject
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -47,10 +47,4 @@ class RxPresenter(
         if (!disposable.isDisposed)
             disposable.dispose()
     }
-}
-
-enum class SeekBarStatus {
-    ON_START,
-    ON_PROGRESS,
-    ON_STOP
 }

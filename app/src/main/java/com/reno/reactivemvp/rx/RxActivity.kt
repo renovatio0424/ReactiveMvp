@@ -5,27 +5,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.reno.reactivemvp.Item
-import com.reno.reactivemvp.MainModel
 import com.reno.reactivemvp.R
-import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 class RxActivity : AppCompatActivity(), RxContract.View {
-    private lateinit var presenter: RxPresenter
+    private val presenter: RxContract.Presenter by inject { parametersOf(this) }
+    private val adapter: RxContract.Adapter.Model by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val subject = PublishSubject.create<Pair<SeekBarStatus, Item>>()
-        val adapter: RxContract.Adapter.Model = RxAdapter(subject)
-        val model: RxContract.Model = MainModel()
-        presenter = RxPresenter(
-            view = this,
-            model = model,
-            adapterModel = adapter
-        )
 
         rvMain.adapter = adapter as RecyclerView.Adapter<*>
         rvMain.layoutManager = LinearLayoutManager(this)
